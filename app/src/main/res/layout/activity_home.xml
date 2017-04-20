@@ -29,6 +29,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:background="@color/colorAccent"
-        app:srcCompat="@drawable/keyclipartdirdLR7i9" />
+        app:srcCompat="@drawable/keyclipart" />
 
 </android.support.design.widget.CoordinatorLayout>
