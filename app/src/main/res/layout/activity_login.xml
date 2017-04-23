@@ -12,10 +12,17 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:gravity="center_vertical">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/passivelogo"
+        android:layout_above="@+id/loginEditText"/>
     <EditText android:id="@+id/loginEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/login_text_hint"
+        android:singleLine="true"
+        android:maxLength="20"
         android:textSize="25dp"/>
     <LinearLayout android:id="@+id/loginLinear"
         android:layout_width="match_parent"

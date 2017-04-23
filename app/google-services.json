@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "962707741400",
+    "firebase_url": "https://passive-69e88.firebaseio.com",
+    "project_id": "passive-69e88",
+    "storage_bucket": "passive-69e88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962707741400:android:15ca2f4c2ae482cc",
+        "android_client_info": {
+          "package_name": "com.example.artisja.passive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962707741400-k22hkbu03tu53moq00jd4sca3j9n2m84.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeTWRb_nLED65AW0ZzMDk0dpQxi1A6qPQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
