@@ -1,17 +1,25 @@
 package com.example.artisja.passive;
 
+import android.*;
+import android.Manifest;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import com.android.*;
-import org.json.*;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.google.firebase.*;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,47 +28,49 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.SecureRandom;
+
 import static android.R.id.content;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText loginEditText;
-    Button loginButton;
+    Button loginButton,signUpButton;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference ref = firebaseDatabase.getReference("Code");
+    DatabaseReference ref = firebaseDatabase.getReference("8045869402");
     String data;
+    static Integer hashPassword;
+    private PendingIntent sendPI;
+    Context context;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        context = this;
+        sendPI =  PendingIntent.getActivity(context,0,new Intent(context,Home.class),0);
         setUpWidgets();
-        setUpClickListeners();
         setUpSMS();
+        setUpClickListeners();
+
     }
 
     private void setUpSMS() {
-          SharedPreferences settings = getSharedPreferences("UserInfo", 0);
-
-//        params.put("api_key", settings.getString("api_key", ""));
-//        params.put("api_secret", settings.getString("api_secret",""));
-//        params.put("from", originator.getText().toString());
-//        params.put("to", destination.getText().toString());
-//        params.put("text", content.getText().toString());
-
+        ActivityCompat.requestPermissions(LoginActivity.this,
+                new String[]{Manifest.permission.SEND_SMS}, 0);
     }
 
     private void setUpClickListeners() {
         final LoginActivity loginActivity = this;
-
+        loginEditText.setHint("Type in Number Code");
+        loginEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Clicked","Login Clicked");
-
-                Log.d("ref check",ref.toString());
+                Log.d("Clicked", "Login Clicked");
+                Log.d("ref check", ref.toString());
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -69,11 +79,22 @@ public class LoginActivity extends AppCompatActivity {
         if (data.equals(loginEditText.getText().toString())){
             Log.d("login Check: ","Its good.");
             Toast.makeText(LoginActivity.this, "Valid PassCode", Toast.LENGTH_SHORT).show();
-            Intent toHome = new Intent(loginActivity,Home.class);
-            startActivity(toHome);
+            SecureRandom secureRandom = new SecureRandom();
+            byte[] values = new byte[20];
+            secureRandom.nextBytes(values);
+            hashPassword =  secureRandom.nextInt();
+            if (hashPassword<0){
+                hashPassword = hashPassword *-1;
+            }
+            ref.setValue(hashPassword);
+            sendPI =  PendingIntent.getActivity(context,0,new Intent(context,Home.class),0);
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage("8045869402",null,LoginActivity.hashPassword.toString(),sendPI,null);
+//            Intent toHome = new Intent(loginActivity,Home.class);
+//            toHome.putExtra("Reference",ref.toString());
+//            startActivity(toHome);
         }else{
             Log.d("Wrong: ","Incorrect input");
-            Toast.makeText(LoginActivity.this, "Incorrect or Empty Passcode", Toast.LENGTH_SHORT).show();
             }
         }
                     @Override
@@ -83,10 +104,19 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void setUpWidgets(){
         loginEditText = (EditText) findViewById(R.id.loginEditText);
         loginButton = (Button) findViewById(R.id.loginButton);
+        signUpButton = (Button) findViewById(R.id.sign_up_button);
     }
 }

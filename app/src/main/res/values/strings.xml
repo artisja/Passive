@@ -2,4 +2,9 @@
     <string name="app_name">Passive</string>
     <string name="action_settings">Settings</string>
     <string name="login_text_hint">Login Number</string>
+
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="sign_up_prompt">This is Passive a Password saving app. Tap the screen to sign up with your Telephone number.</string>
+    <string name="sign_up_alert_message">Type in your Phone Number.</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

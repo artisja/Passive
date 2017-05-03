@@ -1,8 +1,11 @@
 package com.example.artisja.passive;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,20 +30,28 @@ public class PasswordListAdapter  extends RecyclerView.Adapter<PasswordListAdapt
     }
 
     public PasswordListAdapter(ArrayList<Login> loginList){
-        this.dataSet = loginList;
+        this.dataSet = Home.passwordSet;
+        this.dataSet.toString();
     }
+
     @Override
     public PasswordListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.password_row,parent,false);
+        ViewHolder viewHolder = new ViewHolder(v);
+
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(PasswordListAdapter.ViewHolder holder, int position) {
+            holder.siteName.setText(dataSet.get(position).getSiteName());
+            holder.passwordName.setText(dataSet.get(position).getPassword());
+        Log.d("holder value",holder.siteName.getText().toString());
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return dataSet.size();
     }
 }
